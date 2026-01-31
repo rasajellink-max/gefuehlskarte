@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gefühlskarte – Im Strudel</title>
+  <style>
+    body { font-family:-apple-system,system-ui,sans-serif; margin:0; background:#f6f6f6; }
+    .wrap { max-width:780px; margin:36px auto; padding:0 16px; }
+    .card { background:#fff; border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
+    .tag { display:inline-block; font-size:12px; opacity:.7; border:1px solid #ddd; padding:6px 10px; border-radius:999px; }
+    h1 { margin:10px 0 6px; font-size:22px; }
+    p { margin:10px 0; font-size:18px; line-height:1.5; }
+    .q { margin-top:16px; padding:14px; border-radius:14px; background:#fafafa; border:1px solid #eee; }
+    ul { margin:10px 0 0 20px; font-size:18px; line-height:1.5; }
+    .row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    button { font-size:16px; padding:10px 14px; border-radius:12px; border:0; cursor:pointer; }
+    .ghost { background:#eee; }
+    .primary { background:#111; color:#fff; }
+    .progress { margin-top:14px; opacity:.6; font-size:14px; }
+    .hint { margin-top:10px; font-size:14px; opacity:.75; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <span class="tag">Gefühlskarte · Beispiel · Im Strudel</span>
+      <h1 id="title">Im Strudel</h1>
+
+      <div id="content"></div>
+
+      <div class="progress" id="progress"></div>
+
+      <div class="row">
+        <button class="ghost" id="back" type="button">Zurück</button>
+        <button class="primary" id="next" type="button">Weiter</button>
+      </div>
+
+      <div class="hint" id="hint"></div>
+    </div>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Im Strudel",
+        html: `
+          <p>Wenn du dich gerade „im Strudel“ fühlst: das ist okay. Du musst es nicht wegdrücken.</p>
+          <div class="q">
+            <p><b>Mini-Check:</b> Atme einmal langsam aus und spür kurz, wie deine Füße den Boden berühren.</p>
+          </div>
+        `
+      },
+      {
+        title: "Welche Art von Strudel ist es?",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was passt gerade am ehesten?</p>
+            <ul>
+              <li>Gedanken-Strudel</li>
+              <li>Gefühls-Strudel</li>
+              <li>Körper-Strudel</li>
+              <li>Situations-Strudel</li>
+              <li>Alles auf einmal</li>
+            </ul>
+            <p>Wähle innerlich eine Kategorie – ohne es perfekt erklären zu müssen.</p>
+          </div>
+        `
+      },
+      {
+        title: "Umschauen",
+        html: `
+          <div class="q">
+            <p><b>Aufgabe:</b> Schau dich auf der Gefühlskarte um.</p>
+            <p>Was ist <i>jetzt</i> da, das dir ein kleines bisschen Halt geben könnte?</p>
+            <p>Bleib bei <b>einer</b> Sache.</p>
+          </div>
+        `
+      },
+      {
+        title: "Etwas Halt",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Wenn das, was dir Halt gibt etwas Reales wäre: Was könnte das für dich sein?</p>
+            <p>Eine Person? Ein Satz? Eine Pause? Ein Gegenstand? Eine Übung?</p>
+            <p>Wähle innerlich <b>eins</b>.</p>
+          </div>
+        `
+      },
+      {
+        title: "Kleiner nächster Schritt",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was ist ein kleiner nächster Schritt, den du heute nutzen könntest oder auf der Karte gehen möchtest?</p>
+            <p>So klein, dass er machbar wirkt.</p>
+          </div>
+          <div class="q">
+            <p><b>Wenn du dich akut unsicher fühlst:</b> Bitte sprich sofort das Personal an.</p>
+          </div>
+        `
+      }
+    ];
+
+    let i = 0;
+    const titleEl = document.getElementById("title");
+    const contentEl = document.getElementById("content");
+    const progressEl = document.getElementById("progress");
+    const hintEl = document.getElementById("hint");
+    const backBtn = document.getElementById("back");
+    const nextBtn = document.getElementById("next");
+
+    function render() {
+      const s = steps[i];
+      titleEl.textContent = s.title;
+      contentEl.innerHTML = s.html;
+
+      backBtn.disabled = (i === 0);
+      nextBtn.textContent = (i === steps.length - 1) ? "Fertig" : "Weiter";
+      progressEl.textContent = `Schritt ${i + 1} von ${steps.length}`;
+
+      hintEl.textContent = (i === 0)
+        ? "Tipp: Diese Seite kannst du als NFC-/QR-Ziel für den Punkt „Im Strudel“ nutzen."
+        : "";
+    }
+
+    backBtn.addEventListener("click", () => { if (i > 0) { i--; render(); } });
+    nextBtn.addEventListener("click", () => {
+      if (i < steps.length - 1) { i++; render(); }
+      else { i = 0; render(); }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
+</body>
+</html>
