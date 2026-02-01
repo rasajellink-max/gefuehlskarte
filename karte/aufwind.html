@@ -13,34 +13,97 @@
     p { margin:10px 0; font-size:18px; line-height:1.5; }
     .q { margin-top:16px; padding:14px; border-radius:14px; background:#fafafa; border:1px solid #eee; }
     .row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
-    a.button { display:inline-block; font-size:16px; padding:10px 14px; border-radius:12px; background:#111; color:#fff; text-decoration:none; }
+    button { font-size:16px; padding:10px 14px; border-radius:12px; border:0; cursor:pointer; }
+    .ghost { background:#eee; }
+    .primary { background:#111; color:#fff; }
+    .progress { margin-top:14px; opacity:.6; font-size:14px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <span class="tag">Gefühlskarte · Aufwind</span>
-      <h1>Aufwind</h1>
+      <h1 id="title">Aufwind</h1>
 
-      <div class="q">
-        <p><b>Ein Moment von Aufwind.</b></p>
-        <p>Vielleicht fühlt sich etwas leichter an, klarer oder hoffnungsvoller.</p>
-      </div>
+      <div id="content"></div>
 
-      <div class="q">
-        <p><b>Frage:</b> Woran merkst du, dass gerade ein Aufwind da ist?</p>
-        <p>Körper · Gedanken · Stimmung · Situation</p>
-      </div>
+      <div class="progress" id="progress"></div>
 
-      <div class="q">
-        <p><b>Frage:</b> Was hat diesen Aufwind möglich gemacht?</p>
-        <p>Etwas Kleines reicht.</p>
-      </div>
-
-      <div class="q">
-        <p><b>Impuls:</b> Was könntest du tun, um diesen Aufwind ein kleines bisschen zu unterstützen?</p>
+      <div class="row">
+        <button class="ghost" id="back" type="button">Zurück</button>
+        <button class="primary" id="next" type="button">Weiter</button>
       </div>
     </div>
   </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Aufwind",
+        html: `
+          <p>Wenn Aufwind da ist, fühlt sich etwas leichter an – auch wenn nicht alles gelöst ist.</p>
+          <div class="q">
+            <p><b>Mini-Check:</b> Nimm kurz wahr: Wo in dir ist es gerade ein bisschen leichter?</p>
+          </div>
+        `
+      },
+      {
+        title: "Woran merkst du es?",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Woran merkst du, dass gerade Aufwind da ist?</p>
+            <p>Körper · Gedanken · Stimmung · Situation</p>
+          </div>
+        `
+      },
+      {
+        title: "Was hat geholfen?",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was hat diesen Aufwind möglich gemacht?</p>
+            <p>Etwas Kleines reicht.</p>
+          </div>
+        `
+      },
+      {
+        title: "Aufwind unterstützen",
+        html: `
+          <div class="q">
+            <p><b>Impuls:</b> Was könntest du tun, um diesen Aufwind ein kleines bisschen zu unterstützen?</p>
+            <p>Ein kleiner Schritt zählt.</p>
+          </div>
+          <div class="q">
+            <p><b>Wenn du dich akut unsicher fühlst:</b> Bitte sprich sofort das Personal an.</p>
+          </div>
+        `
+      }
+    ];
+
+    let i = 0;
+    const titleEl = document.getElementById("title");
+    const contentEl = document.getElementById("content");
+    const progressEl = document.getElementById("progress");
+    const backBtn = document.getElementById("back");
+    const nextBtn = document.getElementById("next");
+
+    function render() {
+      const s = steps[i];
+      titleEl.textContent = s.title;
+      contentEl.innerHTML = s.html;
+
+      backBtn.disabled = (i === 0);
+      nextBtn.textContent = (i === steps.length - 1) ? "Fertig" : "Weiter";
+      progressEl.textContent = `Schritt ${i + 1} von ${steps.length}`;
+    }
+
+    backBtn.addEventListener("click", () => { if (i > 0) { i--; render(); } });
+    nextBtn.addEventListener("click", () => {
+      if (i < steps.length - 1) { i++; render(); }
+      else { i = 0; render(); }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
 </body>
 </html>
