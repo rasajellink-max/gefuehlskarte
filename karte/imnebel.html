@@ -12,41 +12,107 @@
     h1 { margin:10px 0 6px; font-size:22px; }
     p { margin:10px 0; font-size:18px; line-height:1.5; }
     .q { margin-top:16px; padding:14px; border-radius:14px; background:#fafafa; border:1px solid #eee; }
+    .row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    button { font-size:16px; padding:10px 14px; border-radius:12px; border:0; cursor:pointer; }
+    .ghost { background:#eee; }
+    .primary { background:#111; color:#fff; }
+    .progress { margin-top:14px; opacity:.6; font-size:14px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <span class="tag">Gefühlskarte · Im Nebel</span>
-      <h1>Im Nebel</h1>
+      <h1 id="title">Im Nebel</h1>
 
-      <div class="q">
-        <p><b>Wenn du dich im Nebel fühlst:</b></p>
-        <p>Du musst gerade nicht wissen, wo alles hinführt.</p>
-      </div>
+      <div id="content"></div>
 
-      <div class="q">
-        <p><b>Wahrnehmung:</b><br>
-        Auch wenn vieles unklar ist – was kannst du im Moment trotzdem wahrnehmen?</p>
-      </div>
+      <div class="progress" id="progress"></div>
 
-      <div class="q">
-        <p><b>Nähe:</b><br>
-        Was ist dir im Nebel näher als sonst?<br>
-        (z.B. dein Atem, dein Körper, Geräusche, der Boden)</p>
-      </div>
-
-      <div class="q">
-        <p><b>Der Berg im Nebel:</b><br>
-        Der Weg ist da, auch wenn du ihn nicht ganz siehst.<br>
-        Was sagt dir das über dein Ziel oder deinen Weg gerade?</p>
-      </div>
-
-      <div class="q">
-        <p><b>Nächster Schritt:</b><br>
-        Was wäre ein vorsichtiger nächster Schritt, ohne alles sehen zu müssen?</p>
+      <div class="row">
+        <button class="ghost" id="back" type="button">Zurück</button>
+        <button class="primary" id="next" type="button">Weiter</button>
       </div>
     </div>
   </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Im Nebel",
+        html: `
+          <p>Im Nebel muss man nicht alles sehen, um weiterzugehen.</p>
+          <div class="q">
+            <p><b>Mini-Check:</b> Spür kurz den Boden unter dir. Ein Ausatmen reicht.</p>
+          </div>
+        `
+      },
+      {
+        title: "Trotzdem etwas sehen",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Auch wenn vieles unklar ist – was kannst du gerade trotzdem wahrnehmen?</p>
+            <p>Vielleicht: Körper, Geräusche, Licht, Gedanken, Gefühle, eine Person in der Nähe.</p>
+          </div>
+        `
+      },
+      {
+        title: "Nähe statt Ferne",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was ist dir im Nebel näher als sonst?</p>
+            <p>Manchmal wird „nah“ deutlicher, während „fern“ verschwimmt.</p>
+          </div>
+        `
+      },
+      {
+        title: "Der Weg ist da",
+        html: `
+          <div class="q">
+            <p><b>Satz:</b> Der Weg ist da – auch wenn du ihn nicht komplett siehst.</p>
+            <p><b>Frage:</b> Was bedeutet das für dich gerade?</p>
+          </div>
+        `
+      },
+      {
+        title: "Ein vorsichtiger Schritt",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was wäre ein vorsichtiger nächster Schritt, ohne alles sehen zu müssen?</p>
+            <p>Ein Schritt reicht.</p>
+          </div>
+          <div class="q">
+            <p><b>Wenn du dich akut unsicher fühlst:</b> Bitte sprich sofort das Personal an.</p>
+          </div>
+        `
+      }
+    ];
+
+    let i = 0;
+    const titleEl = document.getElementById("title");
+    const contentEl = document.getElementById("content");
+    const progressEl = document.getElementById("progress");
+    const backBtn = document.getElementById("back");
+    const nextBtn = document.getElementById("next");
+
+    function render() {
+      const s = steps[i];
+      titleEl.textContent = s.title;
+      contentEl.innerHTML = s.html;
+
+      backBtn.disabled = (i === 0);
+      nextBtn.textContent = (i === steps.length - 1) ? "Fertig" : "Weiter";
+      progressEl.textContent = `Schritt ${i + 1} von ${steps.length}`;
+    }
+
+    backBtn.addEventListener("click", () => { if (i > 0) { i--; render(); } });
+    nextBtn.addEventListener("click", () => {
+      if (i < steps.length - 1) { i++; render(); }
+      else { i = 0; render(); }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
 </body>
 </html>
