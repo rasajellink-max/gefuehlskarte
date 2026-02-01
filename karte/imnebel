@@ -1,1 +1,52 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gefühlskarte – Im Nebel</title>
+  <style>
+    body { font-family:-apple-system,system-ui,sans-serif; margin:0; background:#f6f6f6; }
+    .wrap { max-width:780px; margin:36px auto; padding:0 16px; }
+    .card { background:#fff; border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
+    .tag { display:inline-block; font-size:12px; opacity:.7; border:1px solid #ddd; padding:6px 10px; border-radius:999px; }
+    h1 { margin:10px 0 6px; font-size:22px; }
+    p { margin:10px 0; font-size:18px; line-height:1.5; }
+    .q { margin-top:16px; padding:14px; border-radius:14px; background:#fafafa; border:1px solid #eee; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <span class="tag">Gefühlskarte · Im Nebel</span>
+      <h1>Im Nebel</h1>
 
+      <div class="q">
+        <p><b>Wenn du dich im Nebel fühlst:</b></p>
+        <p>Du musst gerade nicht wissen, wo alles hinführt.</p>
+      </div>
+
+      <div class="q">
+        <p><b>Wahrnehmung:</b><br>
+        Auch wenn vieles unklar ist – was kannst du im Moment trotzdem wahrnehmen?</p>
+      </div>
+
+      <div class="q">
+        <p><b>Nähe:</b><br>
+        Was ist dir im Nebel näher als sonst?<br>
+        (z.B. dein Atem, dein Körper, Geräusche, der Boden)</p>
+      </div>
+
+      <div class="q">
+        <p><b>Der Berg im Nebel:</b><br>
+        Der Weg ist da, auch wenn du ihn nicht ganz siehst.<br>
+        Was sagt dir das über dein Ziel oder deinen Weg gerade?</p>
+      </div>
+
+      <div class="q">
+        <p><b>Nächster Schritt:</b><br>
+        Was wäre ein vorsichtiger nächster Schritt, ohne alles sehen zu müssen?</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
