@@ -12,39 +12,103 @@
     h1 { margin:10px 0 6px; font-size:22px; }
     p { margin:10px 0; font-size:18px; line-height:1.5; }
     .q { margin-top:16px; padding:14px; border-radius:14px; background:#fafafa; border:1px solid #eee; }
+    .row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    button { font-size:16px; padding:10px 14px; border-radius:12px; border:0; cursor:pointer; }
+    .ghost { background:#eee; }
+    .primary { background:#111; color:#fff; }
+    .progress { margin-top:14px; opacity:.6; font-size:14px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <span class="tag">Gefühlskarte · Am Ziel</span>
-      <h1>Am Ziel</h1>
+      <h1 id="title">Am Ziel</h1>
 
-      <div class="q">
-        <p><b>Ankommen.</b></p>
-        <p>Nimm dir einen Moment, um innerlich stehen zu bleiben.</p>
-      </div>
+      <div id="content"></div>
 
-      <div class="q">
-        <p><b>Rückblick:</b><br>
-        Wenn du auf den Weg hierher schaust – was hast du alles hinter dir gelassen oder überwunden?</p>
-      </div>
+      <div class="progress" id="progress"></div>
 
-      <div class="q">
-        <p><b>Ressourcenblick:</b><br>
-        Was an dir hat dir geholfen, hier anzukommen?</p>
-      </div>
-
-      <div class="q">
-        <p><b>Veränderung:</b><br>
-        Was ist heute anders als am Anfang dieses Weges?</p>
-      </div>
-
-      <div class="q">
-        <p><b>Ausblick:</b><br>
-        Was möchtest du von diesem Ort mitnehmen, wenn du weitergehst?</p>
+      <div class="row">
+        <button class="ghost" id="back" type="button">Zurück</button>
+        <button class="primary" id="next" type="button">Weiter</button>
       </div>
     </div>
   </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Am Ziel",
+        html: `
+          <p><b>Am Ziel.</b> Wenn es sich für dich gerade so anfühlt, darf das genau so stimmen.</p>
+          <div class="q">
+            <p><b>Mini-Check:</b> Nimm dir 5 Sekunden und spür: Wo im Körper merkt du „angekommen“ am ehesten?</p>
+          </div>
+        `
+      },
+      {
+        title: "Rückblick",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Wenn du auf den Weg hierher schaust – was hast du hinter dir gelassen oder überwunden?</p>
+          </div>
+        `
+      },
+      {
+        title: "Was in dir geholfen hat",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was an dir hat dir geholfen, hier anzukommen?</p>
+          </div>
+        `
+      },
+      {
+        title: "Was heute anders ist",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was ist heute anders als am Anfang dieses Weges?</p>
+          </div>
+        `
+      },
+      {
+        title: "Mitnehmen",
+        html: `
+          <div class="q">
+            <p><b>Frage:</b> Was möchtest du von diesem Ort mitnehmen, wenn du weitergehst?</p>
+          </div>
+          <div class="q">
+            <p><b>Wenn du dich akut unsicher fühlst:</b> Bitte sprich sofort das Personal an.</p>
+          </div>
+        `
+      }
+    ];
+
+    let i = 0;
+    const titleEl = document.getElementById("title");
+    const contentEl = document.getElementById("content");
+    const progressEl = document.getElementById("progress");
+    const backBtn = document.getElementById("back");
+    const nextBtn = document.getElementById("next");
+
+    function render() {
+      const s = steps[i];
+      titleEl.textContent = s.title;
+      contentEl.innerHTML = s.html;
+
+      backBtn.disabled = (i === 0);
+      nextBtn.textContent = (i === steps.length - 1) ? "Fertig" : "Weiter";
+      progressEl.textContent = `Schritt ${i + 1} von ${steps.length}`;
+    }
+
+    backBtn.addEventListener("click", () => { if (i > 0) { i--; render(); } });
+    nextBtn.addEventListener("click", () => {
+      if (i < steps.length - 1) { i++; render(); }
+      else { i = 0; render(); }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
 </body>
 </html>
